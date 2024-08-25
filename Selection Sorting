@@ -1,0 +1,28 @@
+#define _CRT_SECURE_NO_WARINGS
+#include <stdio.h>
+int main()
+{
+	int i, j;
+	int cnt;
+	int arr[5] = { 7,4,11,9,2 };
+	int max;
+	for (i = 0; i < 4; i++)
+	{
+		cnt = i;
+		max = arr[i];
+		for (j = i; j < 5; j++)
+		{
+			if (max < arr[j])
+			{
+				max = arr[j];
+				cnt = j;
+			}
+		}
+		swap(&arr[i], &arr[cnt]);
+	}
+	for (i = 0; i < 5; i++)
+	{
+		printf("%d ", arr[i]);
+	}
+	printf("\n");
+}

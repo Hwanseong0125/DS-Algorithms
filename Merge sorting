@@ -1,0 +1,86 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+
+void merge(int a[], int start, int m, int end)
+{
+	int b[100];
+	int i, j, k;
+	i = start;
+	j = m + 1;
+	k = start;
+
+	while (i <= m && j <= end)
+	{
+		if (a[i] < a[j])
+		{
+			b[k] = a[i];
+			i++;
+		}
+		else
+		{
+			b[k] = a[j];
+			j++;
+		}
+		k++;
+	}
+	if (i > m) {
+		for (int t = j; t <= end; t++)
+		{
+			b[k] = a[t];
+			k++;
+		}
+	}
+	else {
+		for (int t = i; t <= m; t++)
+		{
+			b[k] = a[t];
+			k++;
+		}
+	}
+
+	for (int t = start; t <= end; t++)
+	{
+		a[t] = b[t];
+	}
+}
+void mergesort(int a[], int start, int end)
+{
+	if (start < end)
+	{
+		int m = (start + end) / 2;
+		mergesort(a, start, m);
+		mergesort(a, m+1, end);
+		merge(a, start, m, end);
+	}
+}
+
+int main()
+{
+	int i, j;
+	int list[100];
+	int value;
+	int num;
+	scanf("%d", &num);
+	for (i = 0; i < num; i++)
+	{
+		scanf("%d", &value);
+		list[i] = value;
+	}
+	int l = 0;
+	int r = num - 1;
+
+	for (i = 0; i < num; i++)
+	{
+		printf("%d ", list[i]);
+
+	}
+	printf("\n");
+	mergesort(list, l, r);
+	for (i = 0; i < num; i++)
+	{
+		printf("%d ", list[i]);
+
+	}
+	printf("\n");
+
+}

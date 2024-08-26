@@ -1,0 +1,131 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdlib.h>
+#include <stdio.h>
+int SIZE = 100;
+
+struct bucket* hashTable = NULL;
+struct node
+{
+	int key;
+	int value;
+	struct node* next;
+};
+struct bucket
+{
+	int count;
+	struct node* head;
+};
+
+struct node* creatNode(int key, int value)
+{
+	struct node* newNode;
+	newNode = (struct node*)malloc(sizeof(struct node));
+	newNode->key = key;
+	newNode->value = value;
+	newNode->next = NULL;
+
+	return newNode;
+}
+int hashFunc(int key)
+{
+	return key % SIZE;
+}
+void insert(int key, int value)
+{
+	int hashindex = hashFunc(key);
+	struct node* Node;
+	Node = creatNode(key, value);
+	if (hashTable[hashindex].count == 0)
+	{
+		hashTable[hashindex].head = Node;
+	}
+	else
+	{
+		Node->next = hashTable[hashindex].head;
+		hashTable[hashindex].head = Node;
+	}
+	hashTable[hashindex].count++;
+
+	
+}
+void delete(int key)
+{
+	int hashindex = hashFunc(key);
+	struct node* Node= hashTable[hashindex].head;
+	struct node* prev = Node;
+
+	if (Node == NULL)
+	{
+		printf("\n Not Founded\n");
+		return;
+	}
+	
+	while (Node != NULL)
+	{
+		if (Node->key == key)
+		{
+			if (hashTable[hashindex].head == Node)
+			{
+				hashTable[hashindex].head = Node->next;
+			}
+			else
+			{
+				prev->next = Node->next;
+			}
+			free(Node);
+			hashTable[hashindex].count--;
+
+			return;
+		}
+		prev = Node;
+		Node = Node->next;
+	}
+	printf("\n Not Founded\n");
+	return;
+
+}
+void search(int key)
+{
+	int hashindex = hashFunc(key);
+	struct node* Node = hashTable[hashindex].head;
+
+	while (Node != NULL)
+	{
+		if (Node->key == key)
+		{
+			printf("Key : %d, Value : %d \n", Node->key, Node->value);
+			return;
+		}
+		Node = Node->next;
+	}
+
+	printf("\n Not Founded\n");
+	return;
+}
+void display(int key)
+{
+	struct node* Node;
+	for (int i = 0; i < SIZE; i++)
+	{
+		printf("bucket %d - ",i);
+		Node = hashTable[i].head;
+		while (Node != NULL)
+		{
+			printf("K : %d, V : %d |", Node->key, Node->value);
+			Node = Node->next;
+		}
+		printf("\n");
+	}
+}
+int main()
+{
+	int i;
+	hashTable = (struct bucket*)malloc(sizeof(struct bucket) * SIZE);
+	for (i = 0; i < SIZE; i++) {
+		hashTable[i].count = 0;
+		hashTable[i].head = NULL;
+	}
+
+
+	free(hashTable);
+}

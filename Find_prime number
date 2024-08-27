@@ -1,0 +1,13 @@
+int is_prime (long long value)
+{
+	if (value <= 1) return 0;
+	else if (value == 2) return 1;
+	else
+	{
+		for (int i = 2; i <= sqrt(value); i++)
+		{
+			if (value % i == 0) return 0;
+		}
+	}
+	return 1;
+}

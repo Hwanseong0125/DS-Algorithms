@@ -1,0 +1,131 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+
+typedef struct sNode{
+	struct sNode* next;
+	char* data;
+}sNode;
+typedef struct {
+	int size;
+	sNode* top;
+}Stack;
+
+sNode* createSNode(char* data)
+{
+	sNode* node;
+	node = (sNode*)malloc(sizeof(sNode));
+	node->data = (char*)malloc(sizeof(char) * (strlen(data) + 1));
+	strcpy(node->data, data);
+	node->next = NULL;
+
+	return node;
+}
+void createStack(Stack** stk)
+{
+	(*stk) = (Stack*)malloc(sizeof(Stack));
+	(*stk)->top = NULL;
+	(*stk)->size = 0;
+}
+void Push(Stack* stk, char*data)
+{
+	sNode* newNode = createSNode(data);
+	if (stk->size == 0)// stack is empty
+	{
+		stk->top = newNode;
+	}
+	else // stack isnt empty
+	{
+		newNode->next = stk->top;
+		stk->top = newNode;
+	}
+	stk->size++;
+	return;
+}
+void deleteSNode(sNode* Node)
+{
+	free(Node->data);
+	free(Node);
+}
+void deleteStack(Stack* stack)
+{
+	sNode* tempNode;
+	while (stack->size != 0)
+	{
+		tempNode = stack->top;
+		stack->top = tempNode->next;
+		deleteSNode(tempNode);
+		(stack->size)--;
+	}
+	free(stack);
+}
+sNode* Pop(Stack* stk)
+{
+	sNode* Node;
+	if (stk->size == 0)//empty
+	{
+		printf("cant pop\n");
+		Node = NULL;
+	}
+	else//not empty
+	{
+		Node = stk->top;
+		stk->top = stk->top->next;
+		stk->size--;
+	}
+	return Node;
+}
+void clearStack(Stack *stk)
+{
+	while (stk->size != 0) {
+		sNode* node = Pop(stk);
+		printf("Clearing: %s\n", node->data);
+		deleteSNode(node);
+	}
+}
+void displayStack(Stack* stk)
+{
+	sNode* tNode = stk->top;
+	while (tNode != NULL)
+	{
+		printf("%s\n", tNode->data);
+		tNode = tNode->next;
+	}
+	//stk->top = tNode;
+}
+int main()
+{
+	Stack* stk;
+	sNode* Node;
+	createStack(&stk);
+	int order_num;
+	char str[20];
+	printf("push : 1, pop : 2, clear : 3, display : 4\n");
+	while (scanf("%d", &order_num) && order_num != 0)
+	{
+		switch (order_num)
+		{
+		case 1: //push
+			printf("push : ");
+			scanf("%s", str);
+			Push(stk, str);
+			break;
+		case 2: //pop
+			Node = Pop(stk);
+			if (Node != NULL) {
+				printf("Pop : %s\n", Node->data);
+				deleteSNode(Node);
+			}
+			break;
+		case 3: //clear
+			clearStack(stk);
+			break;
+		case 4: //display
+			displayStack(stk);
+			break;
+		default:
+			break;
+		}
+	}
+	deleteStack(stk);
+}

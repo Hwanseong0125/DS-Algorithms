@@ -1,0 +1,144 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+\
+typedef struct qNode {
+	struct qNode* next;
+	char* data;
+}qNode;
+
+typedef struct {
+	qNode* front;
+	qNode* rear;
+	int size;
+}Queue;
+
+qNode* createQNode(Queue* queue, char* data)
+{
+	qNode* newNode = (qNode*)malloc(sizeof(qNode));
+	newNode->data = (char*)malloc(sizeof(char) * (strlen(data) + 1));
+	strcpy(newNode->data, data);
+	newNode->next = NULL;
+	return newNode;
+}
+void createQueue(Queue** queue)
+{
+	*queue = (Queue*)malloc(sizeof(Queue));
+	(*queue)->size = 0;
+	(*queue)->front = NULL;
+	(*queue)->rear = NULL;
+	
+}
+void deleteQNode(qNode* Node)
+{
+	free(Node->data);
+	free(Node);
+}
+qNode* Dequeue(Queue* queue)
+{
+	qNode* tempNode = queue->front;
+	if (queue->size == 0)//큐 사이즈가 0
+	{
+		printf("Queue is empty\n");
+		return NULL;
+	}
+	else if (queue->size == 1)//큐 사이즈가 1
+	{
+		queue->front = NULL;
+		queue->rear = NULL;
+	}
+	else//둘 다 아닐때
+	{
+		queue->front = queue->front->next;
+	}
+	queue->size--;
+	return tempNode;
+}
+void deleteQueue(Queue* queue)
+{
+	while (queue->size != 0)
+	{
+		qNode* tempNode = Dequeue(queue);
+		deleteQNode(tempNode);
+	}
+	free(queue);
+}
+void Enqueue (Queue* queue, char* data)
+{
+	qNode* Node = createQNode(queue, data);
+	if (queue->size == 0)//size가 0일때
+	{
+		queue->front = Node;
+		queue->rear = Node;
+	}
+	else//size가 0이 아닐때
+	{
+		queue->rear->next = Node;
+		queue->rear = Node;
+	}
+	queue->size++;
+}
+void DisplayQueue(Queue* queue)
+{
+	qNode* tempNode = queue->front;
+	printf("-------\n");
+	while (tempNode != NULL)
+	{
+		printf("%s\n", tempNode->data);
+		tempNode = tempNode->next;
+	}
+	printf("-------\n");
+}
+
+void ClearQueue(Queue* queue)
+{
+	qNode* Node;
+	printf("-------\n");
+	while (queue->size != 0)
+	{
+		Node = Dequeue(queue);
+		printf("%s\n", Node->data);
+		deleteQNode(Node);
+	}
+	printf("-------\n");
+}
+int main()
+{
+	char str[20];
+	int order_num;
+	Queue* queue;
+	createQueue(&queue);
+	qNode* Node;
+	int num;
+	printf("Enqueue: 1, Dequeue: 2, Display: 3, Clear: 4, End: 0\n");
+	while (scanf("%d", &order_num) && order_num != 0)
+	{
+		switch (order_num)
+		{
+		case 1:
+			printf("Put data: ");
+			scanf("%s", str);
+			Enqueue(queue, str);
+			break;
+		case 2:
+			Node = Dequeue(queue);
+			if (Node != NULL)
+			{
+				printf("Release: %s\n", Node->data);
+				deleteQNode(Node);
+			}
+			break;
+		case 3:
+			DisplayQueue(queue);
+			break;
+		case 4:
+			ClearQueue(queue);
+			break;
+		default:
+			break;
+		}
+	}
+	deleteQueue(queue);
+}

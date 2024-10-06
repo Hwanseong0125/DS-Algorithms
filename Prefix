@@ -1,0 +1,28 @@
+#백준 11659번 : 구간 합 구하기 4
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <math.h>
+
+int main()
+{
+	int number[100001];
+	int dp[100001];
+	int N, M;
+	scanf("%d %d", &N, &M);
+	dp[0] = 0;
+	for (int i = 1; i <= N; i++)
+	{
+		scanf("%d", &number[i]);
+		dp[i] = dp[i - 1] + number[i];
+	}
+
+	for (int i = 1; i <= M; i++)
+	{
+		int res;
+		int start, end;
+		scanf("%d %d", &start, &end);
+		res = dp[end] - dp[start-1];
+		printf("%d\n", res);
+	}
+}

@@ -1,0 +1,65 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+
+int BinarySearch(int list[], int size,int key)
+{
+	int lo = 0;
+	int hi = size - 1;
+
+	while (lo <= hi)
+	{
+		int mid = (lo + hi) / 2;
+		if (list[mid] == key)
+		{
+			return mid;
+		}
+		else if (list[mid] > key)
+		{
+			hi = mid - 1;
+		}
+		else
+		{
+			lo = mid + 1;
+		}
+	}
+	return -1;
+}
+
+int lowerBound(int list[], int size, int key)
+{
+	int lo = 0;
+	int hi = size - 1;
+
+	while (lo <= hi)
+	{
+		int mid = (lo + hi) / 2;
+		if (list[mid] < key)   // key 이상(>= key)을 찾기 위해 "작다"를 제외하는 방식
+		{
+			lo = mid + 1;
+		}
+		else
+			hi = mid - 1;
+	}
+	return lo;
+}
+
+int upperBound(int list[], int size, int key)
+{
+	int lo = 0;
+	int hi = size - 1;
+
+	while (lo <= hi)
+	{
+		int mid = (lo + hi) / 2;
+		if (list[mid] <= key)  // key 초과(> key)를 찾기 위해 "작거나 같다"를 제외하는 방식
+		{
+			lo = mid + 1;
+		}
+		else
+			hi = mid - 1;
+	}
+	return lo;
+}

@@ -1,0 +1,33 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+
+int main()
+{
+	int N;
+	int value[16][16] = { 0, }; // 최대 15*15 case
+	int prefix[16][16] = { 0, };
+	scanf("%d", &N); // N*N
+
+	for (int i = 1; i < N; i++)
+	{
+		for (int j = 1; j < N; j++)
+		{
+			scanf("%d", &value[i][j]);
+		}
+	}
+	for (int i = 1; i < N; i++)
+	{
+		for (int j = 1; j < N; j++)
+		{
+			prefix[i][j] = prefix[i - 1][j] + prefix[i][j - 1] + value[i][j] - prefix[i - 1][j - 1];
+		}
+	}
+	
+	//원하는 x1,y2 부터 x2,y2까지의 누적합
+	// value = prefix[y2][x2]-prefix[y2][x2-x1]-prefix[y2-y1][x2]+prefix[y1][x1];
+
+	return 0;
+}

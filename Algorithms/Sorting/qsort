@@ -1,0 +1,42 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int compare_char(const void* a, const void* b) {
+    // a와 b는 문자열 포인터의 주소이므로 double pointer로 캐스팅
+    const char* str1 = *(const char**)a;
+    const char* str2 = *(const char**)b;
+
+    // strcmp를 사용하여 문자열 비교
+    return strcmp(str1, str2);  // strcmp(str1, str2) -> 사전순으로 정렬, (두 문자열이 같으면 0을, 첫 번째로 다른 문자에서 첫 번째 문자열이 더 작으면 음수, 첫 번째 문자열이 더 크면 양수를 반환)
+}
+int compare_int(const void* a, const void* b) {
+    return (*(int*)a - *(int*)b); // a와 b를 int로 변환 후 비교,  오름차순 :(*(int*)a - *(int*)b);, 내림차순 : (*(int*)b - *(int*)a);
+}
+
+int main() {
+    int T;
+    int number[10];
+
+    // 테스트 케이스 개수 입력
+    scanf("%d", &T);
+
+    for (int testcase = 1; testcase <= T; testcase++) {
+        // 배열 입력
+        for (int i = 0; i < 10; i++) {
+            scanf("%d", &number[i]);
+        }
+
+        // 배열 정렬
+        qsort(number, 10, sizeof(int), compare);
+
+        // 정렬된 배열 출력
+        printf("Test case #%d: ", testcase);
+        for (int i = 0; i < 10; i++) {
+            printf("%d ", number[i]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}

@@ -1,0 +1,147 @@
+#include <iostream>
+using namespace std;
+
+typedef struct Node {
+
+	struct Node* next;
+	int data;
+
+}Node;
+
+typedef struct {
+	Node* head;
+}linked_list;
+
+Node* createnode(void)
+{
+	Node* newNode = (Node*)malloc(sizeof(Node));
+	newNode->data = NULL;
+	newNode->next = NULL;
+
+	return newNode;
+}
+
+void insert_front(linked_list& list, int val)
+{
+	Node* node = createnode();
+
+	if (list.head == NULL) // head가 NULL
+	{
+		node->data = val;
+		list.head = node;
+	}
+	else { // head가 null이 아닐때
+		node->data = val;
+		node->next = list.head;
+		list.head = node;
+	}
+}
+void insert_back(linked_list &list, int val)
+{
+	// node = node->next : 포인터의 이동
+	// node->next = node : 리스트의 구조 수정
+	Node* newNode = createnode();
+	
+	if (list.head == NULL) // head가 NULL
+	{
+		newNode->data = val;
+		list.head = newNode;
+	}
+	else { // head가 null이 아닐때
+		Node *node = list.head;
+		while (node->next != NULL)
+		{
+			node = node->next;
+		}
+		newNode->data = val;
+		node->next = newNode;
+	}
+}
+void remove_front(linked_list& list) {
+
+	Node* node = list.head;
+
+	if (node == NULL) //리스틍에 요소가 없을 때
+	{
+		cout<<"리스트에 요소가 없습니다.\n";
+		return;
+	}
+	else // list에 요소가 있을 때
+	{
+		list.head = node->next;
+		free(node);
+	}
+}
+void remove_back(linked_list& list) {
+	if (list.head == NULL) { // 리스트가 비어 있을 때
+		cout << "리스트에 요소가 없습니다.\n";
+		return;
+	}
+
+	if (list.head->next == NULL) { // 리스트에 하나의 노드만 있을 때
+		free(list.head);
+		list.head = NULL;
+		return;
+	}
+
+	Node* node = list.head;
+	Node* prev = NULL;
+	while (node->next != NULL) { // 마지막 노드까지 이동
+		prev = node;
+		node = node->next;
+	}
+	prev->next = NULL;
+	free(node);
+}
+void print_list(linked_list& list)
+{
+	Node* node = list.head;
+
+	while (node!= NULL)
+	{
+		cout << node->data << " ";
+		node = node->next;
+	}
+	cout << "\n ";
+}
+
+void clear(linked_list& list)
+{
+
+	while (list.head != NULL)
+	{
+		remove_front(list);
+	}
+}
+
+int main()
+{
+	linked_list* list = (linked_list*)malloc(sizeof(linked_list));
+	list->head = NULL;
+	int val;
+	int choice;
+	// 1 : input_f, 2: input_b, 3 :remove_f, 4: remove_b, 5:print_A, 6: list_c, 7: exit
+	do {
+
+		cout << "---------linked list menu ----------\n";
+		cout << "1 : input_f\n2 : input_b\n3 : remove_f\n4 : remove_b\n5 : print_A\n6 : list_c\n7 : exit\n";
+		cin >> choice;
+
+		
+
+		switch (choice)
+		{
+
+		case 1: cin >> val; insert_front(*list, val);  break;
+		case 2: cin >> val; insert_back(*list, val); break;
+		case 3: remove_front(*list); break;
+		case 4: remove_back(*list); break;
+		case 5: print_list(*list); break;
+		case 6: clear(*list); break;
+		case 7: break;
+		default:
+			break;
+		}
+
+	} while (choice !=7);
+}

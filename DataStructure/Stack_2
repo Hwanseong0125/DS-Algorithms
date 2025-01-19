@@ -1,0 +1,63 @@
+#include <iostream>
+using namespace std;
+
+#define SIZE 100
+int pos = 0;
+int stack[SIZE];
+
+
+void push()
+{
+	int val;
+	cout << " push : ";
+	cin >> val;
+	stack[pos] = val;
+	pos++;
+}
+void pop()
+{
+	int val;
+	if (pos != 0)
+	{
+		int val = stack[pos - 1];
+		cout << " pop : " << val << "\n";
+		pos--;
+	}
+	else
+	{
+		cout << "stack에 원소가 없습니다.\n";
+		return;
+	}
+	
+}
+void top()
+{
+	cout << " top : " << stack[pos-1] << "\n";
+
+}
+
+int main()
+{
+	int command;
+
+	do {
+		cout << "----stack command----\n";
+		cout << "1:push, 2:pop, 3:top, 4:exit\n";
+
+		cin >> command;
+		switch (command)
+		{
+
+		case 1: push(); break;
+		case 2: pop(); break;
+		case 3: top(); break;
+		case 4: break;
+		default:
+			break;
+		}
+
+	} while (command != 4);
+	
+	
+
+}

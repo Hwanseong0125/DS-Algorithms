@@ -1,0 +1,79 @@
+#include <iostream>
+using namespace std;
+#define SIZE 100
+
+int queue[SIZE];
+int head;
+int tail;
+
+int Is_empty()
+{
+	return head == tail;
+}
+int Is_full()
+{
+	return (tail + 1) % SIZE == head;
+}
+
+void push(int val)
+{
+	if (Is_full())
+	{
+		cout << "queue is full\n";
+		return;
+	}
+	queue[tail] = val;
+	tail = (tail + 1) % SIZE;
+}
+void pop()
+{
+	if (Is_empty()) return;
+	head = (head + 1) % SIZE;
+}
+int front()
+{
+	if (Is_empty()) return -1;
+
+	return queue[head];
+}
+int back()
+{
+	if (Is_empty()) return -1;
+	return queue[(tail-1+SIZE) % SIZE];
+}
+
+
+int main()
+{
+	int c;
+	
+	do {
+		cout << "---- queue command ----\n";
+		cout << "1: push, 2: pop, 3: front, 4: back, 5: exit\n";
+		cin >> c;
+		switch (c)
+		{
+		case 1: {
+			int val;
+			cout << "push: ";
+			cin >> val;
+			push(val);
+		}break;
+		case 2: pop();break;
+		case 3: {
+			int val = front();
+			cout << "front : " << val<<"\n";
+		}break;
+		case 4:
+		{
+			int val = back();
+			cout << "back : " << val << "\n";
+		}break;
+		case 5:break;
+
+		default:
+			break;
+		}
+
+	} while (c != 5);
+}
